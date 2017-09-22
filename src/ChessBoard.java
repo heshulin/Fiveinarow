@@ -5,17 +5,153 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.security.cert.PolicyNode;
 
 /**
  * Created by HeShulin on 2017/9/20.
  */
 public class ChessBoard extends JFrame implements MouseListener, Runnable {
 
+    private JButton singlePlay;
     private int colorflag = 1;
-    private synchronized void initColorFlag(){
-        colorflag = 1;
+    public synchronized void initColorFlag(int x){
+        colorflag = x;
     }
+    private BufferedImage background = null;
+    private BufferedImage blackchess = null;
+    private BufferedImage whitechess = null;
+    private Point[][] CHESSBOARDEXPRESS = new Point[15][15];
+    private int[][] CHESSMAN = new int[15][15];
+    private Graphics g2 = null;
+    private Graphics2D g = null;
+    private JButton jButton1=null;
+    public static JPanel GImage = null;
+    private JLabel jlpic = new JLabel();
+    //判断是否赢棋
+    private boolean judgeWinner(int x,int y,int player){
+        int num=0;
+        //横向判断
+        for(int i=x;i>=x-4;i--) {
+            if(i<0||i>=15){
+                continue;
+            }
+            if(CHESSMAN[i][y]==player){
+                num++;
+                if(num>=5){
+                    return true;
+                }
+            }
+            else{
+                break;
+            }
+        }
+        for(int i=x+1;i<=x+4;i++) {
+            if(i<0||i>=15){
+                continue;
+            }
+            if(CHESSMAN[i][y]==player){
+                num++;
+                System.out.println(num);
+                if(num>=5){
+                    return true;
+                }
+            }
+            else{
+                break;
+            }
+        }
+        //纵向判断
+        num=0;
+        for(int i=y;i>=y-4;i--) {
+            if(i<0||i>=15){
+                continue;
+            }
+            if(CHESSMAN[x][i]==player){
+                num++;
+                if(num>=5){
+                    return true;
+                }
+            }
+            else{
+                break;
+            }
+        }
+        for(int i=y+1;i<=y+4;i++) {
+            if(i<0||i>=15){
+                continue;
+            }
+            if(CHESSMAN[x][i]==player){
+                num++;
+                if(num>=5){
+                    return true;
+                }
+            }
+            else{
+                break;
+            }
+        }
+        //左斜向判断
+        num=0;
+        for(int i=0;i<=4;i++) {
+            if(x+i<0||x+i>=15||y+i<0||y+i>=15){
+                continue;
+            }
+            if(CHESSMAN[x+i][y+i]==player){
+                num++;
+                if(num>=5){
+                    return true;
+                }
+            }
+            else{
+                break;
+            }
+        }
+        for(int i=1;i<=4;i++) {
+            if(x-i<0||x-i>=15||y-i<0||y-i>=15){
+                continue;
+            }
+            if(CHESSMAN[x-i][y-i]==player){
+                num++;
+                if(num>=5){
+                    return true;
+                }
+            }
+            else{
+                break;
+            }
+        }
+        //右斜向判断
+        num=0;
+        for(int i=0;i<=4;i++) {
+            if(x+i<0||x+i>=15||y-i<0||y-i>=15){
+                continue;
+            }
+            if(CHESSMAN[x+i][y-i]==player){
+                num++;
+                if(num>=5){
+                    return true;
+                }
+            }
+            else{
+                break;
+            }
+        }
+        for(int i=1;i<=4;i++) {
+            if(x-i<0||x-i>=15||y+i<0||y+i>=15){
+                continue;
+            }
+            if(CHESSMAN[x-i][y+i]==player){
+                num++;
+                if(num>=5){
+                    return true;
+                }
+            }
+            else{
+                break;
+            }
+        }
+        return false;
+    }
+    //改变下棋方
     public synchronized boolean change(){
         try{
             if(colorflag == 1){
@@ -29,13 +165,6 @@ public class ChessBoard extends JFrame implements MouseListener, Runnable {
         }
 
     }
-    private BufferedImage background = null;
-    private BufferedImage blackchess = null;
-    private BufferedImage whitechess = null;
-    private Point[][] CHESSBOARDEXPRESS = new Point[15][15];
-    private int[][] CHESSMAN = new int[15][15];
-    private Graphics g2 = null;
-    private Graphics2D g = null;
     //初始化数据
     private void initData(){
         for(int i=0;i<15;i++){
@@ -61,7 +190,7 @@ public class ChessBoard extends JFrame implements MouseListener, Runnable {
         return new Point(-1,-1);
     }
 
-
+    JFrame jFrame = this;
     //初始化窗口
     public void initWindow(){
         //引入背景图
@@ -98,13 +227,14 @@ public class ChessBoard extends JFrame implements MouseListener, Runnable {
                 this.g2.fillRect((int)CHESSBOARDEXPRESS[i][j].getX()-5,(int)CHESSBOARDEXPRESS[i][j].getY()-5,10,10);
             }
         }
-        initColorFlag();
+        initColorFlag(1);
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        this.g.drawImage(background, 0, 0, this);
+        this.g.drawImage(background, 0, 0 ,this);
+
     }
 
 
@@ -133,15 +263,30 @@ public class ChessBoard extends JFrame implements MouseListener, Runnable {
                 this.g = (Graphics2D) this.getGraphics();
             }
             Point tmppoint = getPos(tmpx,tmpy);
+//            System.out.println((int)tmppoint.getX()+" "+(int)tmppoint.getY());
+//            System.out.println(tmpx+" "+tmpy);
             if(colorflag==1&&CHESSMAN[(int)tmppoint.getX()][(int)tmppoint.getY()]==0){
                 this.g.drawImage(blackchess,tmpx-25,tmpy-25,50,50,null);
-
                 CHESSMAN[(int)tmppoint.getX()][(int)tmppoint.getY()] = 1;
+                boolean win = judgeWinner((int)tmppoint.getX(),(int)tmppoint.getY(),1);
+                if(win==true){
+                    System.out.println("卡比兽获胜");
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "卡比兽获胜", "胜利信息", JOptionPane.PLAIN_MESSAGE);
+                }
+                change();
             }else if(colorflag==2&&CHESSMAN[(int)tmppoint.getX()][(int)tmppoint.getY()]==0) {
                 this.g.drawImage(whitechess,tmpx-25,tmpy-25,50,50,null);
                 CHESSMAN[(int)tmppoint.getX()][(int)tmppoint.getY()] = 2;
+                boolean win = judgeWinner((int)tmppoint.getX(),(int)tmppoint.getY(),2);
+                if(win==true){
+                    System.out.println("杰尼龟获胜");
+                    Toolkit.getDefaultToolkit().beep();
+                    JOptionPane.showMessageDialog(null, "杰尼龟获胜", "胜利信息", JOptionPane.PLAIN_MESSAGE);
+                }
+                change();
             }
-            change();
+
             System.out.println(tmpx + ":" + tmpy);
 //测试
 //            for(int i=0;i<15;i++){
