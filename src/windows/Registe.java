@@ -4,9 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.Socket;
+import java.util.Vector;
 
 /**
  * Created by HeShulin on 2017/9/23.
+ * 此类暂时废除
  */
 public class Registe extends JFrame implements MouseListener, Runnable  {
 
@@ -63,8 +66,8 @@ public class Registe extends JFrame implements MouseListener, Runnable  {
         con.add(jPanel6);
 
 
-        this.setVisible(true);
 
+        this.setVisible(true);
 
     }
 

@@ -8,8 +8,10 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+
 /**
  * Created by HeShulin on 2017/9/22.
+ * 此类暂时废除
  */
 public class Login extends JFrame implements MouseListener, Runnable {
 
