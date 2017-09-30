@@ -7,8 +7,8 @@ public class Main {
     private static Registe registe= new Registe();
     private static ChooseFunction chooseFunction= new ChooseFunction();
     public static void main(String[] args) {
-//        chessBoard.initWindow();
-//        chessBoard.initChessBoard();
+        //chessBoard.initWindow();
+        //chessBoard.initChessBoard();
         chooseFunction.initWindow();
     }
 

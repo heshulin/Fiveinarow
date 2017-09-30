@@ -7,13 +7,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.Socket;
 
 /**
  * Created by HeShulin on 2017/9/20.
  */
 public class ChessBoard extends JFrame implements MouseListener, Runnable {
 
-    private JButton singlePlay;
+    int playStyle;
     private int colorflag = 1;
     public synchronized void initColorFlag(int x){
         colorflag = x;
@@ -197,9 +198,9 @@ public class ChessBoard extends JFrame implements MouseListener, Runnable {
     public void initWindow(){
         //引入背景图
         try {
-            background = ImageIO.read(getClass().getResource("background.jpg"));
-            blackchess = ImageIO.read(getClass().getResource("blackchess.png"));
-            whitechess = ImageIO.read(getClass().getResource("whitechess.png"));
+            background = ImageIO.read(getClass().getResource("/background.jpg"));
+            blackchess = ImageIO.read(getClass().getResource("/blackchess.png"));
+            whitechess = ImageIO.read(getClass().getResource("/whitechess.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -215,7 +216,7 @@ public class ChessBoard extends JFrame implements MouseListener, Runnable {
         g = (Graphics2D)this.getGraphics();
     }
     //初始化棋盘
-    public void initChessBoard(){
+    public void initChessBoard(int playStyle, Socket socket){
         this.g2 = background.createGraphics();
         this.g2.setColor(new Color(0,0,0));
         for(int i=0;i<15;i++){
@@ -275,6 +276,8 @@ public class ChessBoard extends JFrame implements MouseListener, Runnable {
                     System.out.println("卡比兽获胜");
                     Toolkit.getDefaultToolkit().beep();
                     JOptionPane.showMessageDialog(null, "卡比兽获胜", "胜利信息", JOptionPane.PLAIN_MESSAGE);
+                    dispose();
+
                 }
                 change();
             }else if(colorflag==2&&CHESSMAN[(int)tmppoint.getX()][(int)tmppoint.getY()]==0) {
@@ -285,6 +288,7 @@ public class ChessBoard extends JFrame implements MouseListener, Runnable {
                     System.out.println("杰尼龟获胜");
                     Toolkit.getDefaultToolkit().beep();
                     JOptionPane.showMessageDialog(null, "杰尼龟获胜", "胜利信息", JOptionPane.PLAIN_MESSAGE);
+                    dispose();
                 }
                 change();
             }

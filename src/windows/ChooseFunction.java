@@ -33,8 +33,8 @@ public class ChooseFunction extends JFrame implements MouseListener, Runnable {
 
         //第二行 单人游戏
         JPanel pan2 = new JPanel();
-        JButton singlePlay = new JButton("单  人  游  戏");
-        pan2.add(singlePlay);
+        JButton singlePTC = new JButton("单  人  游  戏");
+        pan2.add(singlePTC);
         con.add(pan2);
 
 
@@ -46,12 +46,98 @@ public class ChooseFunction extends JFrame implements MouseListener, Runnable {
         con.add(pan3);
 
 
-        //第四行空行
+        //第四行单机游戏
         JPanel pan4 = new JPanel();
+        JButton singlePTP = new JButton("单  机  游  戏");
+        pan4.add(singlePTP);
         con.add(pan4);
-
         this.setVisible(true); // 设置窗口显示
 
+
+
+        singlePTC.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+        doublePlay.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Matching matching = new Matching();
+                matching.initWindow();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+        singlePTP.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ChessBoard chessBoard = new ChessBoard();
+                chessBoard.initColorFlag(1);
+                chessBoard.initWindow();
+                chessBoard.initChessBoard(3,null);
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
     }
 
